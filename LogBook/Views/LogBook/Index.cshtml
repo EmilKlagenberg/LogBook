@@ -1,4 +1,5 @@
 ﻿@model LogBook.Models.LogPostViewModel
+@using  Humanizer
 
 @{
     ViewData["Title"] = "Index";
@@ -12,9 +13,10 @@
 <table class="table">
     <thead>
         <tr>
-            <th>Questions</th>
             <th>CreateTime</th>
             <th>Note</th>
+            <th>Questions</th>
+
             <th>Tags</th>
             <th></th>
         </tr>
@@ -23,36 +25,46 @@
         @foreach (var item in Model.Posts)
         {
             <tr>
+                <td>@item.CreateTime.Humanize()</td>
+                <td>@item.Note</td>
                 <td>
                     <table>
                         <thead>
                             <tr>
-                             
                             </tr>
                         </thead>
-                        @foreach (var answer in item.QuestionList)
+                        @foreach (var qa in item.QAList)
                         {
                             <tr>
-                                <td><h3>@answer.Question</h3></td>
-                                <td>@answer.Answer</td>
+                                <td><h5>@qa.Key.Question</h5></td>
+                                <!--td>@qa.Value.ToString()</td-->
+                            <td>
+                                @if (qa.Value.Score != null)
+                                {
+                                   @qa.Key.MinScore <input type="range" min=@qa.Key.MinScore max=@qa.Key.MaxScore value=@qa.Value.Score disabled="disabled" /> @qa.Key.MaxScore
+                                }
+                                else
+                                {
+                                    @qa.Value.ToString()
+                                }
+                            </td>
                             </tr>
                         }
                     </table>
                 </td>
-                <td>@item.CreateTime</td>
-                <td>@item.Note</td>
+
                 <td>
                     @foreach (var tag in item.GetTags())
                     {
-                        <span> @tag.Name </span><span>;</span>
+                        <span> @tag.Name</span>
                     }
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-            </td>
-        </tr>
-    }
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

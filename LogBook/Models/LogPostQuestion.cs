@@ -7,28 +7,13 @@ namespace LogBook.Models
 {
     public class LogPostQuestion
     {
-        public string Answer { get; set; }
         public string Question { get; set; }
         public Guid Id { get; set; }
         public List<Tag> Tags { get; set; }
         public bool Scorable { get; set; }
-        private readonly int? MinScore;
-        private readonly int? MaxScore;
-        private int? _score;
+        public int? MinScore { get; set; }
+        public int? MaxScore { get; set; }
 
-        public int? Score
-        {
-            get { return _score; }
-            set {
-                if (Scorable)
-                {
-                    if (value <= MaxScore && value >= MinScore)
-                        _score = value;
-                    else
-                        throw new ApplicationException("Invalid score");
-                }
-            }  
-        }
 
         public LogPostQuestion(string question, List<Tag> tags) : this(question, tags, null, null )
         { }

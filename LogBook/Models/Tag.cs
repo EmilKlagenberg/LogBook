@@ -9,7 +9,7 @@ namespace LogBook.Models
         public Tag(string name)
         {
             Name = name;
-            Id = new Guid();
+            Id = Guid.NewGuid();
         }
     }
 }
